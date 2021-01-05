@@ -18,7 +18,7 @@ void EasyTcpSever::InitSocket()
 	WSADATA dat;
 	WSAStartup(ver, &dat);
 #endif
-	// 1.ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½socket
+	// 1.½¨Á¢Ò»¸ösocket
 	m_sock = socket(AF_INET, SOCK_STREAM, 0);
 }
 
@@ -46,12 +46,12 @@ int EasyTcpSever::Bind(const std::string& ip, const unsigned short port)
 
 	if (SOCKET_ERROR == bind(m_sock, (sockaddr*)&_sin, sizeof(sockaddr_in)))
 	{
-		std::cout << "ï¿½ó¶¨¶Ë¿ï¿½Ê§ï¿½ï¿½" << std::endl;
+		std::cout << "°ó¶¨¶Ë¿ÚÊ§°Ü" << std::endl;
 		return -1;
 	}
 	else
 	{
-		std::cout << "ï¿½ó¶¨¶Ë¿Ú³É¹ï¿½" << std::endl;
+		std::cout << "°ó¶¨¶Ë¿Ú³É¹¦" << std::endl;
 	}
 	return 0;
 }
@@ -60,12 +60,12 @@ int EasyTcpSever::Listen(int num)
 {
 	if (SOCKET_ERROR == listen(m_sock, num))
 	{
-		std::cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½Ê§ï¿½ï¿½" << std::endl;
+		std::cout << "¼àÌýÍøÂç¶Ë¿ÚÊ§°Ü" << std::endl;
 		return -1;
 	}
 	else
 	{
-		std::cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿Ú³É¹ï¿½" << std::endl;
+		std::cout << "¼àÌýÍøÂç¶Ë¿Ú³É¹¦" << std::endl;
 	}
 	return 0;
 }
@@ -100,14 +100,14 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 	int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, 0);
 	if (ret < 0)
 	{
-		std::cout << "select ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << std::endl;
+		std::cout << " select ³ö´í£¡£¡£¡" << std::endl;
 		Close();
 		return std::list<ClientStatus>();
 	}
 	else if (ret > 0)
 	{
-		// ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½socket
+		// ´æÔÚ¿ÉÒÔ²Ù×÷µÄÎÄ¼þÃèÊö·û
+		// ÃèÊö·ûÎª·þÎñ¶Ësocket
 		if (FD_ISSET(m_sock, &fdRead))
 		{
 			FD_CLR(m_sock, &fdRead);
@@ -116,33 +116,33 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 #ifdef _WIN32
 			SOCKET client = accept(m_sock, (sockaddr*)&clientAddr, &len);
 #else
-			SOCKET client = accept(m_sock, (sockaddr*)&clientAddr, (socklen_t*)&len);
+			SOCKET client = accept(sock, (sockaddr*)&clientAddr, (socklen_t*)&len);
 #endif
 			if (client == INVALID_SOCKET)
 			{
-				std::cout << "ï¿½ï¿½ï¿½Õµï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä¿Í»ï¿½ï¿½ï¿½" << std::endl;
+				std::cout << "½ÓÊÕµ½Ò»¸öÎÞÐ§µÄ¿Í»§¶Ë" << std::endl;
 			}
 			else
 			{
-				std::cout << "ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ip:" << inet_ntoa(clientAddr.sin_addr) << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << std::endl;
+				std::cout << "½ÓÊÕµ½À´×Ôip:" << inet_ntoa(clientAddr.sin_addr) << "µÄÁ¬½Ó" << std::endl;
 				m_lClientSock.push_back(client);
 			}
 		}
-		// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ÓµÄ¿Í»ï¿½ï¿½Ëµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ±éÀúÒÑ¾­Á¬½ÓµÄ¿Í»§¶ËµÄÎÄ¼þÃèÊö·û
 		std::list<ClientStatus> clientList;
-		for (auto iter = m_lClientSock.begin(); iter != m_lClientSock.end();iter++)
+		for (auto iter = m_lClientSock.begin(); iter != m_lClientSock.end(); iter++)
 		{
 			if (FD_ISSET(*iter, &fdRead))
 			{
 				FD_CLR(*iter, &fdRead);
-				clientList.push_back(ClientStatus(*iter,SocketStatus::READYREADY));
+				clientList.push_back(ClientStatus(*iter, SocketStatus::READYREADY));
 			}
 		}
 		return clientList;
 	}
 	else if (ret == 0)
 	{
-		// Ã»ï¿½Ð¿ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// Ã»ÓÐ¿ÉÒÔ²Ù×÷µÄÃèÊö·û£¬¸ÉÆäËûÊÂÇé
 	}
 
 	return std::list<ClientStatus>();
@@ -150,7 +150,7 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 #endif
 void EasyTcpSever::Close()
 {
-	//ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ÓµÄ¿Í»ï¿½ï¿½ï¿½
+	//¹Ø±ÕÁ¬½ÓµÄ¿Í»§¶Ë
 	for (auto iter : m_lClientSock)
 	{
 		if (iter != INVALID_SOCKET)
@@ -163,7 +163,7 @@ void EasyTcpSever::Close()
 		}
 	}
 	m_lClientSock.clear();
-	// ï¿½Ø±ï¿½win sock 2.x ï¿½ï¿½ï¿½ï¿½
+	// ¹Ø±Õwin sock 2.x »·¾³
 #ifdef _WIN32
 	if (m_sock != INVALID_SOCKET)
 	{
@@ -180,7 +180,7 @@ void EasyTcpSever::Close()
 
 bool EasyTcpSever::IsRun()
 {
-	return m_sock!=INVALID_SOCKET;
+	return m_sock != INVALID_SOCKET;
 }
 
 bool EasyTcpSever::OnRun()
@@ -190,19 +190,19 @@ bool EasyTcpSever::OnRun()
 		Close();
 		return false;
 	}
-	
+
 	return false;
 }
 
 int EasyTcpSever::RecvData(SOCKET sock, std::string& msg)
 {
 	msg.clear();
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// »º³åÇø
 	char buf[10240] = "";
 	int recvLen = (int)recv(sock, buf, sizeof(buf), 0);
 	if (recvLen <= 0)
 	{
-		std::cout << "sock = " << sock << "ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¶Ï¿ï¿½" << std::endl;
+		std::cout << "sock = " << sock << "Á¬½ÓÒÑ¶Ï¿ª" << std::endl;
 		auto iter = std::find(m_lClientSock.begin(), m_lClientSock.end(), sock);
 		if (iter != m_lClientSock.end())
 		{
