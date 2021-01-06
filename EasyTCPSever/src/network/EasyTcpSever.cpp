@@ -46,12 +46,12 @@ int EasyTcpSever::Bind(const std::string& ip, const unsigned short port)
 
 	if (SOCKET_ERROR == bind(m_sock, (sockaddr*)&_sin, sizeof(sockaddr_in)))
 	{
-		std::cout << "绑定端口失败" << std::endl;
+		std::cout << "bind port faile" << std::endl;
 		return -1;
 	}
 	else
 	{
-		std::cout << "绑定端口成功" << std::endl;
+		std::cout << "bind port successful" << std::endl;
 	}
 	return 0;
 }
@@ -60,12 +60,12 @@ int EasyTcpSever::Listen(int num)
 {
 	if (SOCKET_ERROR == listen(m_sock, num))
 	{
-		std::cout << "监听网络端口失败" << std::endl;
+		std::cout << "listen port faile" << std::endl;
 		return -1;
 	}
 	else
 	{
-		std::cout << "监听网络端口成功" << std::endl;
+		std::cout << "listen port successful" << std::endl;
 	}
 	return 0;
 }
@@ -100,7 +100,7 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 	int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, 0);
 	if (ret < 0)
 	{
-		std::cout << " select 出错！！！" << std::endl;
+		std::cout << " select error！！！" << std::endl;
 		Close();
 		return std::list<ClientStatus>();
 	}
@@ -116,15 +116,15 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 #ifdef _WIN32
 			SOCKET client = accept(m_sock, (sockaddr*)&clientAddr, &len);
 #else
-			SOCKET client = accept(sock, (sockaddr*)&clientAddr, (socklen_t*)&len);
+			SOCKET client = accept(m_sock, (sockaddr*)&clientAddr, (socklen_t*)&len);
 #endif
 			if (client == INVALID_SOCKET)
 			{
-				std::cout << "接收到一个无效的客户端" << std::endl;
+				std::cout << "recv a unable client" << std::endl;
 			}
 			else
 			{
-				std::cout << "接收到来自ip:" << inet_ntoa(clientAddr.sin_addr) << "的连接" << std::endl;
+				std::cout << "recv from ip:" << inet_ntoa(clientAddr.sin_addr) << " connect " << std::endl;
 				m_lClientSock.push_back(client);
 			}
 		}
@@ -202,7 +202,7 @@ int EasyTcpSever::RecvData(SOCKET sock, std::string& msg)
 	int recvLen = (int)recv(sock, buf, sizeof(buf), 0);
 	if (recvLen <= 0)
 	{
-		std::cout << "sock = " << sock << "连接已断开" << std::endl;
+		std::cout << "sock = " << sock << "disconnect" << std::endl;
 		auto iter = std::find(m_lClientSock.begin(), m_lClientSock.end(), sock);
 		if (iter != m_lClientSock.end())
 		{

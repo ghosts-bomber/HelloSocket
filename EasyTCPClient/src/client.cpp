@@ -3,7 +3,7 @@
 #include <thread>
 int main()
 {
-	for(int i=0;i<1000;i++)
+	for(int i=0;i<1;i++)
 	{ 
 	std::thread thread01([]() {
 		EasyTcpClient client01;
@@ -12,7 +12,7 @@ int main()
 		client01.Conncet(std::string("127.0.0.1"), 4567);
 		while (true)
 		{
-			client01.SendMsg(std::string("我是客户端"));
+			client01.SendMsg(std::string("I am client"));
 			/*
 			if(client01.OnRun()==SocketStatus::READYREADY)
 			{

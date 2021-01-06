@@ -24,10 +24,10 @@ int EasyTcpClient::InitSocket()
     m_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (m_sock == INVALID_SOCKET)
     {
-        std::cout << "创建socket失败" << std::endl;
+        std::cout << "create socket faile" << std::endl;
         return -1;
     }
-    std::cout << "创建socket成功" << std::endl;
+    std::cout << "create socket successful" << std::endl;
     return 0;
 }
 
@@ -35,7 +35,7 @@ int EasyTcpClient::Conncet(const std::string& ipAddr, const int port)
 {
     if (ipAddr.empty() || port <= 0)
     {
-        std::cout << " 传入的ip地址或端口错误 " << std::endl;
+        std::cout << " ip or port error " << std::endl;
         return -1;
     }
     if (m_sock == INVALID_SOCKET)
@@ -51,15 +51,15 @@ int EasyTcpClient::Conncet(const std::string& ipAddr, const int port)
 #ifdef _WIN32
     _sever.sin_addr.S_un.S_addr = inet_addr(ipAddr.c_str());
 #else
-    _sever.sin_addr.s_addr = inet_addr("192.168.43.198");
+    _sever.sin_addr.s_addr = inet_addr(ipAddr.c_str());
 #endif
     if (SOCKET_ERROR == connect(m_sock, (sockaddr*)&_sever, sizeof(sockaddr_in)))
     {
-        std::cout << " 连接服务器失败 " << std::endl;
+        std::cout << " connect sever failed " << std::endl;
         Close();
         return -1;
     }
-    std::cout << " 连接服务器成功 " << std::endl;
+    std::cout << " connect sever successful " << std::endl;
     return 0;
 }
 
@@ -93,7 +93,7 @@ bool EasyTcpClient::RecvMsg(std::string& msg)
     int recvLen = recv(m_sock, buf, sizeof(buf), 0);
     if (recvLen < 0)
     {
-        std::cout << "sock = " << m_sock << "连接已断开" << std::endl;
+        std::cout << "sock = " << m_sock << " disconnect" << std::endl;
         return false;
     }
     msg.clear();
@@ -120,7 +120,7 @@ SocketStatus EasyTcpClient::OnRun()
         int ret = select(m_sock + 1, &fdReads, nullptr, nullptr, &delayTime);
         if (ret < 0)
         {
-            std::cout << "sock=" << m_sock << "的select任务结束" << std::endl;
+            std::cout << "sock=" << m_sock << " select exit" << std::endl;
             return SocketStatus::INVALID;
         }
         else if(ret>0) 
