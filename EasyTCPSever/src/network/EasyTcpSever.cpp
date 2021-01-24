@@ -1,4 +1,4 @@
-#include "EasyTcpSever.h"
+ï»¿#include "EasyTcpSever.h"
 #include <iostream>
 #include <algorithm>
 EasyTcpSever::EasyTcpSever()
@@ -18,7 +18,7 @@ void EasyTcpSever::InitSocket()
 	WSADATA dat;
 	WSAStartup(ver, &dat);
 #endif
-	// 1.½¨Á¢Ò»¸ösocket
+	// 1.å»ºç«‹ä¸€ä¸ªsocket
 	m_sock = socket(AF_INET, SOCK_STREAM, 0);
 }
 
@@ -97,17 +97,17 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 	}
 	timeval delay = { 0,0 };
 	//int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp,&delay);
-	int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, 0);
+	int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, &delay);
 	if (ret < 0)
 	{
-		std::cout << " select error£¡£¡£¡" << std::endl;
+		std::cout << " select errorï¼ï¼ï¼" << std::endl;
 		Close();
 		return std::list<ClientStatus>();
 	}
 	else if (ret > 0)
 	{
-		// ´æÔÚ¿ÉÒÔ²Ù×÷µÄÎÄ¼şÃèÊö·û
-		// ÃèÊö·ûÎª·şÎñ¶Ësocket
+		// å­˜åœ¨å¯ä»¥æ“ä½œçš„æ–‡ä»¶æè¿°ç¬¦
+		// æè¿°ç¬¦ä¸ºæœåŠ¡ç«¯socket
 		if (FD_ISSET(m_sock, &fdRead))
 		{
 			FD_CLR(m_sock, &fdRead);
@@ -128,7 +128,7 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 				m_lClientSock.push_back(client);
 			}
 		}
-		// ±éÀúÒÑ¾­Á¬½ÓµÄ¿Í»§¶ËµÄÎÄ¼şÃèÊö·û
+		// éå†å·²ç»è¿æ¥çš„å®¢æˆ·ç«¯çš„æ–‡ä»¶æè¿°ç¬¦
 		std::list<ClientStatus> clientList;
 		for (auto iter = m_lClientSock.begin(); iter != m_lClientSock.end(); iter++)
 		{
@@ -142,7 +142,7 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 	}
 	else if (ret == 0)
 	{
-		// Ã»ÓĞ¿ÉÒÔ²Ù×÷µÄÃèÊö·û£¬¸ÉÆäËûÊÂÇé
+		// æ²¡æœ‰å¯ä»¥æ“ä½œçš„æè¿°ç¬¦ï¼Œå¹²å…¶ä»–äº‹æƒ…
 	}
 
 	return std::list<ClientStatus>();
@@ -150,7 +150,7 @@ std::list<ClientStatus> EasyTcpSever::Accept()
 #endif
 void EasyTcpSever::Close()
 {
-	//¹Ø±ÕÁ¬½ÓµÄ¿Í»§¶Ë
+	//å…³é—­è¿æ¥çš„å®¢æˆ·ç«¯
 	for (auto iter : m_lClientSock)
 	{
 		if (iter != INVALID_SOCKET)
@@ -163,7 +163,7 @@ void EasyTcpSever::Close()
 		}
 	}
 	m_lClientSock.clear();
-	// ¹Ø±Õwin sock 2.x »·¾³
+	// å…³é—­win sock 2.x ç¯å¢ƒ
 #ifdef _WIN32
 	if (m_sock != INVALID_SOCKET)
 	{
@@ -197,7 +197,7 @@ bool EasyTcpSever::OnRun()
 int EasyTcpSever::RecvData(SOCKET sock, std::string& msg)
 {
 	msg.clear();
-	// »º³åÇø
+	// ç¼“å†²åŒº
 	char buf[10240] = "";
 	int recvLen = (int)recv(sock, buf, sizeof(buf), 0);
 	if (recvLen <= 0)

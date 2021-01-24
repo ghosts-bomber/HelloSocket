@@ -19,7 +19,7 @@ int main()
 				{
 					std::string msg;
 					sever01.RecvData(iter.sock,msg);
-				//	std::cout << "接收到来自sock="<<iter.sock<<"的消息为：" << msg << std::endl;
+					//std::cout << "接收到来自sock="<<iter.sock<<"的消息为：" << msg << std::endl;
 				}
 			}
 		}

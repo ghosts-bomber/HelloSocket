@@ -83,7 +83,7 @@ void EasyTcpClient::Close()
 bool EasyTcpClient::SendMsg(const std::string& msg)
 {
    // int ret = send(m_sock, msg.c_str(), msg.length(),0);
-    int ret = send(m_sock, msg.c_str(), 10240, 0);
+    int ret = send(m_sock, msg.c_str(), msg.size(), 0);
     return ret<=0?false:true;
 }
 

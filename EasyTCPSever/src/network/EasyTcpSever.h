@@ -1,4 +1,4 @@
-#ifndef EASYTCPSEVER_H
+ï»¿#ifndef EASYTCPSEVER_H
 #define EASYTCPSEVER_H
 
 #ifdef _WIN32
@@ -44,23 +44,23 @@ public:
 	EasyTcpSever();
 	virtual ~EasyTcpSever();
 
-	// ³õÊ¼»¯socket
+	// åˆå§‹åŒ–socket
 	void InitSocket();
-	// °ó¶¨¶Ë¿Ú
+	// ç»‘å®šç«¯å£
 	int Bind(const std::string& ip, const unsigned short port);
-	// ¼àÌı¶Ë¿Ú
+	// ç›‘å¬ç«¯å£
 	int Listen(int num);
-	// ½ÓÊÕ¿Í»§¶ËÁ¬½Ó
+	// æ¥æ”¶å®¢æˆ·ç«¯è¿æ¥
 	std::list<ClientStatus> Accept();
-	// ¹Ø±Õsocket
+	// å…³é—­socket
 	void Close();
-	// ´¦ÀíÏûÏ¢
-	// ÊÇ·ñÔÚ¹¤×÷
+	// å¤„ç†æ¶ˆæ¯
+	// æ˜¯å¦åœ¨å·¥ä½œ
 	bool IsRun();
 	bool OnRun();
-	// ½ÓÊÕÊı¾İ ´¦ÀíÕ³°ü ²ğ·Ö°ü
+	// æ¥æ”¶æ•°æ® å¤„ç†ç²˜åŒ… æ‹†åˆ†åŒ…
 	int RecvData(SOCKET sock,std::string& msg);
-	// ·¢ËÍÊı¾İ
+	// å‘é€æ•°æ®
 	int SendData(SOCKET sock, std::string& msg);
 	void SendDataToAll(std::string& msg);
 private:

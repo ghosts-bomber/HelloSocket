@@ -1,4 +1,4 @@
-#ifndef _CELLTimestamp_hpp_
+ï»¿#ifndef _CELLTimestamp_hpp_
 #define _CELLTimestamp_hpp_
 #include <chrono>
 
@@ -14,17 +14,17 @@ public:
 	{
 		m_begin = std::chrono::high_resolution_clock::now();
 	}
-	// »ñÈ¡µ±Ç°Î¢Ãë
+	// è·å–å½“å‰å¾®ç§’
 	long long getElapsedTimeInMicroSec()
 	{
 		return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - m_begin).count();
 	}
-	// »ñÈ¡µ±Ç°ºÁÃë
+	// è·å–å½“å‰æ¯«ç§’
 	double getElapsedTimeInMilliSec()
 	{
 		return this->getElapsedTimeInMicroSec() * 0.001;
 	}
-	//»ñÈ¡µ±Ç°Ãë
+	//è·å–å½“å‰ç§’
 	double getElapsedSecond()
 	{
 		return getElapsedTimeInMicroSec() * 0.000001;
